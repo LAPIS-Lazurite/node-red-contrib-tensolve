@@ -9,7 +9,7 @@
   },
   "node-red": {
     "nodes": {
-      "database": "node-database.js"
+      "database": "tensolve-database.js"
     }
   },
   "repository": {

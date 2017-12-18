@@ -54,6 +54,7 @@ module.exports = function(RED) {
 		});
 
 		function getDatabase(){
+			node.msgOut.payload = {};
 			if(node.db.open) {
 				node.count = 0;
 				node.db.all("select id, beaconid from user",{},function(err, rows) {
@@ -63,6 +64,8 @@ module.exports = function(RED) {
 							tmp[rows[i].beaconid] = rows[i].id;
 						}
 						done('user',tmp);
+					} else {
+						console.log(err)
 					}
 				});
 				node.db.all("select id,x,y,z from box",{},function(err, rows) {
@@ -76,6 +79,8 @@ module.exports = function(RED) {
 							}
 						}
 						done('box',tmp);
+					} else {
+						console.log(err)
 					}
 				});
 			}
@@ -83,7 +88,8 @@ module.exports = function(RED) {
 		function done(table,data){
 			var tmp;
 			node.count++;
-			node.msgOut[table] = data;
+			node.msgOut.payload[table] = data;
+			console.log(node.msgOut.payload);
 			if(node.count == 2) {
 				node.send(node.msgOut);
 			}
